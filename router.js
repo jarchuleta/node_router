@@ -1,6 +1,7 @@
 
 var fs = require('fs');
 var url = require('url');
+var FileWriter = require('./writeFile.js')
 
 
 module.exports =  function (request, response){
@@ -35,23 +36,8 @@ module.exports =  function (request, response){
   // read the file statically
 }else if(stats && stats.isFile() === true){
 
-    fs.readFile(pathname.substr(1), function (err, data) {
-      if (err) {
-         //console.log(err);
-         // HTTP Status: 404 : NOT FOUND
-         // Content Type: text/plain
-         response.writeHead(404, {'Content-Type': 'text/html'});
-      }else{
-         //Page found
-         // HTTP Status: 200 : OK
-         // Content Type: text/plain
-         response.writeHead(200, {'Content-Type': 'text/html'});
+    FileWriter.write(pathname.substr(1), response);
 
-         // Write the content of the file to response body
-         response.write(data.toString());
-         response.end();
-      }
-    });
   }
   //otherwise look for a handler in requestHandler
   else if (paths.length >= 1) {
@@ -61,6 +47,7 @@ module.exports =  function (request, response){
     var requestHandler;
     var moduleName;
     try {
+
       moduleName ='./controllers/'+paths[1]+'.js'
       requestHandler = require(moduleName);
 
@@ -76,7 +63,7 @@ module.exports =  function (request, response){
     } catch (e) {
       console.log("Function "+ functionName +" not found in " + moduleName);
     }
-    response.end();
+    //response.end();
   // Handle the none route condidtions
   } else {
     console.log("No request handler found for " + pathname);
