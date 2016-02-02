@@ -1,5 +1,6 @@
 var fs = require('fs');
 var handlebars = require('handlebars')
+var config = require('./config');
 
 exports.write = function (path, response) {
 
@@ -29,9 +30,40 @@ exports.renderPartial = function (path, data){
 
 
   try{
-    var source = fs.readFileSync(path, 'utf-8');
-    var template = handlebars.compile(source);
-    var html = template(data);
+
+
+    return html.toString();
+  }
+  catch (error)
+  {
+
+       console.log("Can't read file " + path + " error:" + err);
+
+  }
+}
+
+exports.render = function (path, data){
+  try{
+
+    var body = fs.readFileSync(path, 'utf-8');
+    var template = handlebars.compile(body);
+    var body = template(data);
+
+
+    var template_data = {
+      "config": config.template,
+      "body": body
+    };
+
+    if (config.template.location != nothing){}
+    // read the config file template location
+    var templateFile = fs.readFileSync(config.template.location, 'utf-8');
+    var options = {
+      noEscape:true
+    };
+    var template_full = handlebars.compile(templateFile,options);
+
+    var html = template_full(template_data)
 
     return html.toString();
   }

@@ -24,6 +24,7 @@
   },
   "homepage": "https://github.com/jarchuleta/node_router#readme",
   "dependencies": {
+    "bootstrap": "^3.3.6",
     "handlebars": "^4.0.5"
   }
 }
