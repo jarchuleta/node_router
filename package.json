@@ -22,5 +22,8 @@
   "bugs": {
     "url": "https://github.com/jarchuleta/node_router/issues"
   },
-  "homepage": "https://github.com/jarchuleta/node_router#readme"
+  "homepage": "https://github.com/jarchuleta/node_router#readme",
+  "dependencies": {
+    "handlebars": "^4.0.5"
+  }
 }

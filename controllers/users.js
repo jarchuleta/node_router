@@ -4,8 +4,14 @@ var appDir = path.dirname(require.main.filename);
 var FileWriter = require('../writeFile.js');
 
 exports.add = function (request, response) {
-  console.log("Request handler 'hello' was called.");
+  
+  var data = {
+    title: 'Add User',
+  }
 
-  FileWriter.write(appDir+'/Views/Users/add.html', response);
+  var html =  FileWriter.renderPartial(appDir+'/Views/Users/add.html', data);
+
+  response.write(html);
+  response.end();
 
 }
