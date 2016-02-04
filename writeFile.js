@@ -30,7 +30,9 @@ exports.renderPartial = function (path, data){
 
 
   try{
-
+    var body = fs.readFileSync(path, 'utf-8');
+    var template = handlebars.compile(body);
+    var html = template(data);
 
     return html.toString();
   }
@@ -43,10 +45,12 @@ exports.renderPartial = function (path, data){
 }
 
 exports.render = function (path, data){
+  var html = "";
   try{
 
-    var body = fs.readFileSync(path, 'utf-8');
-    var template = handlebars.compile(body);
+
+    var body_file = fs.readFileSync(path, 'utf-8');
+    var template = handlebars.compile(body_file);
     var body = template(data);
 
 
@@ -55,22 +59,31 @@ exports.render = function (path, data){
       "body": body
     };
 
-    if (config.template.location != nothing){}
-    // read the config file template location
-    var templateFile = fs.readFileSync(config.template.location, 'utf-8');
-    var options = {
-      noEscape:true
-    };
-    var template_full = handlebars.compile(templateFile,options);
 
-    var html = template_full(template_data)
+    if (config.template.location != undefined){
+      console.log(config.template.location);
+      // read the config file template location
 
-    return html.toString();
+      var templateFile = fs.readFileSync(config.template.location, 'utf-8');
+      var options = {
+        noEscape:true
+      };
+      var template_full = handlebars.compile(templateFile,options);
+
+      var html = template_full(template_data)
+
+      return html.toString();
+    }else {
+      return exports.renderPartial(path,data);
+    }
+
   }
   catch (error)
   {
 
-       console.log("Can't read file " + path + " error:" + err);
+       console.log("Can't read file " + path + " error:" + error);
 
   }
+
+  return html;
 }

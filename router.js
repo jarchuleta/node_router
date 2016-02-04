@@ -61,7 +61,7 @@ module.exports =  function (request, response){
       requestHandler[functionName](request, response);
 
     } catch (e) {
-      console.log("Function "+ functionName +" not found in " + moduleName);
+      console.log("Function "+ functionName +" not found in " + moduleName + " error:" + e);
     }
     //response.end();
   // Handle the none route condidtions
